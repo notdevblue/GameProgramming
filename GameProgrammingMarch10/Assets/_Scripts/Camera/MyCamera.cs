@@ -8,24 +8,21 @@ public class MyCamera : MonoBehaviour
     public GameObject _targetObj = null;
     public float _distance = 5.0f;
     public Vector3 _rotate = Vector3.zero;
-    public Vector2 _moveVal = Vector2.zero;
+    public Vector3 _offset = Vector3.zero;
     public float _speed = 3.0f;
 
     private bool _isRotateReady = false;
 
     private void Update()
     {
-        Vector3 targetPos = _targetObj.transform.position;
+        if(_targetObj == null) return;
+
+        Vector3 targetPos = _targetObj.transform.position + _offset;
         Vector3 cameraDir = targetPos - (targetPos + (Vector3.forward * _distance));
         Vector3 cameraPos = Quaternion.Euler(_rotate) * -cameraDir;
 
         transform.position = cameraPos + targetPos;
         transform.LookAt(targetPos);
-
-        if(Vector2.zero != _moveVal) {
-            _moveVal.Normalize();
-            _targetObj.transform.position += Quaternion.Euler(_rotate) * new Vector3(-_moveVal.x, 0.0f, -_moveVal.y) * Time.deltaTime * _speed;
-        }
     }
 
     // 카메라 회전 처리
@@ -45,10 +42,8 @@ public class MyCamera : MonoBehaviour
         _isRotateReady = inContext.performed;
     }
 
-    // 타겟 이동
-    public void MoveTarget(InputAction.CallbackContext inContext)
-    {
-        _moveVal = inContext.ReadValue<Vector2>();
-
+    public void ZoomCamera(InputAction.CallbackContext inContext) {
+        Vector2 wheelVar = inContext.ReadValue<Vector2>();
+        _distance = Mathf.Clamp(_distance + wheelVar.y * 0.1f, 1.0f, 10.0f);
     }
 }
