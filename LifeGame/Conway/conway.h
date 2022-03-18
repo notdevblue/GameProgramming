@@ -1,7 +1,7 @@
 class Conway
 {
    public:
-      Conway(int area);
+      Conway(const int area);
       ~Conway();
 
       // 요약
@@ -9,7 +9,7 @@ class Conway
       //
       // 반환
       //    8방향에 존재하는 유닛 수
-      int   GetNearUnitCount(const int& x, const int& y);
+      int   GetNearUnitCount(const int x, const int y);
 
       // 요약
       //    x, y 좌표가 보드 사이즈를 넘어갈 경우,
@@ -24,7 +24,7 @@ class Conway
       //
       // 반환
       //    이미 유닛이 존재하는 경우 false 을 반환합니다.
-      bool AddUnit(const int& x, const int& y);
+      bool AddUnit(const int x, const int y);
 
    private:
       bool **_board; // 생명게임 보드

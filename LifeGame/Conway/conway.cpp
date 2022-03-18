@@ -1,7 +1,8 @@
 #include "./conway.h"
 #include <cmath>
+#include <iostream>
 
-Conway::Conway(int area) : _length(sqrt(area))
+Conway::Conway(const int area) : _length(sqrt(area))
 {
    _board = new bool*[_length];
 
@@ -21,7 +22,7 @@ Conway::~Conway()
    delete[] _board;
 }
 
-int Conway::GetNearUnitCount(const int& x, const int& y)
+int Conway::GetNearUnitCount(const int x, const int y)
 {
    int unitcount  = 0; // 주변에 있는 유닛 수
    int cachedX    = x;
@@ -51,10 +52,11 @@ bool Conway::GetClampedBoardInfo(int x, int y)
    if(y < 0)
       y = arrLength;
 
+   std::cout << "X: " << x << "\r\nY: " << y << std::endl;
    return _board[y][x];
 }
 
-bool Conway::AddUnit(const int& x, const int& y)
+bool Conway::AddUnit(const int x, const int y)
 {
    if (_board[y][x])
       return false;
