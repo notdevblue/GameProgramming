@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-Conway::Conway(const int area) : _length(sqrt(area))
+Conway::Conway(const int length) : _length(length)
 {
    _board = new bool*[_length];
 
@@ -25,35 +25,36 @@ Conway::~Conway()
 int Conway::GetNearUnitCount(const int x, const int y)
 {
    int unitcount  = 0; // 주변에 있는 유닛 수
-   int cachedX    = x;
-   int cachedY    = y;
+   int cachedX    = x - 1;
+   int cachedY    = y - 1;
 
-   for (--cachedY; cachedY < y + 1; ++cachedY)
+   for (cachedY; cachedY <= y + 1; ++cachedY)
    {
-      for (--cachedX; cachedX < x + 1; ++cachedX)
+      for (cachedX; cachedX <= x + 1; ++cachedX)
       {
-         if(GetClampedBoardInfo(cachedX, cachedY))
+         if(GetClampedBoardInfo(cachedY, cachedX))
             ++unitcount;
       }
+
+      cachedX = x - 1;
    }
 
    return unitcount - 1; // 자기 자신 제외
 }
 
-bool Conway::GetClampedBoardInfo(int x, int y)
+bool Conway::GetClampedBoardInfo(int y, int x)
 {
    int arrLength = _length - 1;
 
-   x = x % (arrLength);
    y = y % (arrLength);
+   x = x % (arrLength);
 
-   if(x < 0)
-      x = arrLength;
    if(y < 0)
       y = arrLength;
+   if(x < 0)
+      x = arrLength;
 
-   std::cout << "X: " << x << "\r\nY: " << y << std::endl;
-   return _board[y][x];
+   return _board[x][y];
 }
 
 bool Conway::AddUnit(const int x, const int y)
@@ -63,4 +64,16 @@ bool Conway::AddUnit(const int x, const int y)
    
    _board[y][x] = true;
    return true;
+}
+
+void Conway::Print(char node)
+{
+   for (int y = 0; y < _length; ++y)
+   {
+      for (int x = 0; x < _length; ++x)
+      {
+         std::cout << (_board[y][x] ? node : ' ');
+      }
+      std::cout << std::endl;
+   }
 }
