@@ -5,45 +5,55 @@ using UnityEngine.InputSystem;
 
 public class MyCamera : MonoBehaviour
 {
-    public GameObject _targetObj = null;
-    public float _distance = 5.0f;
-    public Vector3 _rotate = Vector3.zero;
-    public Vector3 _offset = Vector3.zero;
-    public float _speed = 3.0f;
+	private const float MOVE_SPEED = 10.0f;
 
-    private bool _isRotateReady = false;
+	public GameObject TargetObj = null;
+	public float Distance = 5.0f;
+	public Vector3 Rotate = Vector3.zero;
+	public Vector3 Offset = Vector3.zero;
 
-    private void Update()
-    {
-        if(_targetObj == null) return;
+	private bool _isRotateReady = false;
+	
+	// Start is called before the first frame update
+	void Start()
+	{
+	}
 
-        Vector3 targetPos = _targetObj.transform.position + _offset;
-        Vector3 cameraDir = targetPos - (targetPos + (Vector3.forward * _distance));
-        Vector3 cameraPos = Quaternion.Euler(_rotate) * -cameraDir;
+	// Update is called once per frame
+	void Update()
+	{
+		if (null != TargetObj)
+		{
+			Vector3 targetPos = TargetObj.transform.position + Offset;
+			Vector3 cameraDir = Vector3.forward * Distance;
+			Vector3 cameraPos = Quaternion.Euler(Rotate) * cameraDir;
+			transform.position = targetPos + cameraPos;
+			transform.LookAt(targetPos);
+		}
+	}
 
-        transform.position = cameraPos + targetPos;
-        transform.LookAt(targetPos);
-    }
+	// ƒ´∏ﬁ∂Û »∏¿¸ √≥∏Æ
+	public void RotateCamera(InputAction.CallbackContext InContext)
+	{
+		if (_isRotateReady)
+		{
+			Vector2 inputAxis = InContext.ReadValue<Vector2>() * 0.15f;
+			float pitch = Rotate.x + inputAxis.y;
+			Rotate.x = Mathf.Min(80.0f, Mathf.Abs(pitch)) * Mathf.Sign(pitch);
+			Rotate.y += inputAxis.x;
+		}
+	}
 
-    // Ïπ¥Î©îÎùº ÌöåÏ†Ñ Ï≤òÎ¶¨
-    public void RotateCamera(InputAction.CallbackContext inContext)
-    {
-        if(!_isRotateReady) return;
-        
-        Vector2 inputAxis = inContext.ReadValue<Vector2>();
-        float pitch = _rotate.x + inputAxis.y;
-        _rotate.x = Mathf.Min(80.0f, Mathf.Abs(pitch)) * Mathf.Sign(pitch); // Sign -> Î∂ÄÌò∏Î•º ÎèåÎ†§Ï§å
-        _rotate.y += inputAxis.x;
-    }
+	// ƒ´∏ﬁ∂Û »∏¿¸ ¡ÿ∫Ò √≥∏Æ
+	public void ReadyCameraRotate(InputAction.CallbackContext InContext)
+	{
+		_isRotateReady = InContext.performed;
+	}
 
-    // Ïπ¥Î©îÎùº ÌöåÏ†Ñ Ï§ÄÎπÑ Ï≤òÎ¶¨
-    public void ReadyCameraRotate(InputAction.CallbackContext inContext)
-    {
-        _isRotateReady = inContext.performed;
-    }
-
-    public void ZoomCamera(InputAction.CallbackContext inContext) {
-        Vector2 wheelVar = inContext.ReadValue<Vector2>();
-        _distance = Mathf.Clamp(_distance + wheelVar.y * 0.1f, 1.0f, 10.0f);
-    }
+	// ƒ´∏ﬁ∂Û ¡‹
+	public void ZoomCamera(InputAction.CallbackContext InContext)
+	{
+		Vector2 wheelVal = InContext.ReadValue<Vector2>();
+		Distance = Mathf.Clamp(Distance + wheelVal.y * 0.001f, 1.0f, 10.0f);
+	}
 }
