@@ -3,16 +3,23 @@
 
 int main()
 {
-   Conway* conway = new Conway(5);
-   std::cout << conway->AddUnit(3, 2) << std::endl;
-   std::cout << conway->AddUnit(2, 2) << std::endl;
-   std::cout << conway->AddUnit(1, 2) << std::endl;
+   Conway* conway = new Conway(11, 12);
 
-   std::cout << conway->GetNearUnitCount(2, 2) << std::endl;
+   conway->AddUnit(4, 5);
+   conway->AddUnit(5, 5);
+   conway->AddUnit(6, 5);
+   conway->AddUnit(5, 5);
+   conway->AddUnit(5, 4);
+   conway->AddUnit(5, 6);
 
-   std::cout << std::endl;
 
-   conway->Print('O');
+   while ((!conway->CheckIsAllDead()) && (!conway->TurnLimit()))
+   {
+      system("sleep 0.2; clear");
+      conway->Print('0', '-');
+      conway->Turn();
+   }
+
 
    delete conway;
 }
