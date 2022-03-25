@@ -8,9 +8,3 @@ public:
    int x;
    int y;
 } COORD;
-
-
-coord::coord(int x, int y) : x(x), y(y)
-{
-
-}
