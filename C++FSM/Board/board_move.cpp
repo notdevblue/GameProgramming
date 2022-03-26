@@ -32,12 +32,23 @@ void Board::ProcessInput(int input)
    switch(input)
    {
    case KEY_UP:
+      --_player->y;
+      SetRedraw();
       break;
+
    case KEY_DOWN:
+      ++_player->y;
+      SetRedraw();
       break;
+      
    case KEY_LEFT:
+      --_player->x;
+      SetRedraw();
       break;
+      
    case KEY_RIGHT:
+      ++_player->x;
+      SetRedraw();
       break;
 
    case 'q':

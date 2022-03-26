@@ -2,7 +2,7 @@
 
 void* Board::PrintThreadHelper(void *context)
 {
-   return ((Board *)context)->InputThread();
+   return ((Board *)context)->PrintThread();
 }
 
 void* Board::PrintThread()
@@ -11,9 +11,14 @@ void* Board::PrintThread()
    {
       if (CheckThreadRunStatus())
          break;
+   
+      if(Redraw())
+      {
+         clear();
+         PrintBoard();
+         refresh(); // FIXME: 이상한 쓰래기 문자 가끔 출력됨
+      }
 
-      clear();
-      refresh();
    }
 
    return 0;
@@ -21,5 +26,6 @@ void* Board::PrintThread()
 
 void Board::PrintBoard()
 {
-   
+   mvprintw(_player->y, _player->x, "a");
+   mvprintw(_enemy->y, _enemy->x, "o");
 }

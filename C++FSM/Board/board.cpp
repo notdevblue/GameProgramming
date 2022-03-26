@@ -7,6 +7,7 @@ Board::Board(int x, int y, int enemyX, int enemyY)
    int sy;
 
    _stopThread = false;
+   _redraw = true;
 
    _player = new COORD(x / 2, y / 2);
    _enemy = new COORD(enemyX, enemyY);
@@ -73,4 +74,23 @@ bool Board::CheckThreadRunStatus()
    }
 
    return status;
+}
+
+bool Board::Redraw()
+{
+   bool status;
+
+   pthread_mutex_lock(&_mutex);
+   status = _redraw;
+   _redraw = false;
+   pthread_mutex_unlock(&_mutex);
+
+   return status;
+}
+
+void Board::SetRedraw()
+{
+   pthread_mutex_lock(&_mutex);
+   _redraw = true;
+   pthread_mutex_unlock(&_mutex);
 }

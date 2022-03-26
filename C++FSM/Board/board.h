@@ -63,12 +63,24 @@ private:
    // 반환
    //    스레드를 중지시켜야 하면 true
    bool CheckThreadRunStatus();
+   
+   // 요약
+   //    화면을 clear 하고 다시 그려야 하는지 판단합니다.
+   //
+   // 반환
+   //    다시 그려야 한다면 true
+   bool Redraw();
+
+   // 요약
+   //    화면을 다시 그러야 한다고 설정합니다.
+   void SetRedraw();
 
    std::map<std::string, COORD*> _unitmap;
    int _enemyCount = 0; // 적 아이디 용
 
    pthread_mutex_t _mutex;
    bool _stopThread; // true 인 경우 스레드를 멈춤
+   bool _redraw; // 다시 그러야 함을 나타냄
 
    COORD *_player;
    COORD *_enemy;
