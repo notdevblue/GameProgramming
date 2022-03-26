@@ -9,8 +9,10 @@ Board::Board(int x, int y, int enemyX, int enemyY)
    _stopThread = false;
    _redraw = true;
 
-   _player = new COORD(x / 2, y / 2);
-   _enemy = new COORD(enemyX, enemyY);
+   _player     = new COORD(x / 2, y / 2);
+   _playerData = new CHARACTER(10, 1, 3.0);
+   _enemy      = new COORD(enemyX, enemyY);
+   _enemyData  = new CHARACTER(5, 1, 1.0);
 
    getmaxyx(w, sx, sy);
    COORD *_screen = new COORD(sx, sy);
@@ -35,7 +37,11 @@ Board::Board(int x, int y, int enemyX, int enemyY)
 Board::~Board()
 {
    delete _player;
+   delete _playerData;
+
    delete _enemy;
+   delete _enemyData;
+
    delete _screen;
 
    endwin();
@@ -57,6 +63,24 @@ void Board::WaitAllThreads()
    pthread_join(_printThread, NULL);
 }
 
+void Board::AttackPlayer()
+{
+   double distance = DistanceWithPlayer();
+   if(_enemyData->_atkDistance >= distance)
+   {
+      _playerData->Damage(_enemyData->_atk);
+   }
+}
+
+void Board::AttackEnemy()
+{
+   double distance = DistanceWithPlayer();
+   if (_playerData->_atkDistance >= distance)
+   {
+      _enemyData->Damage(_playerData->_atk);
+   }
+}
+
 bool Board::CheckThreadRunStatus()
 {
    bool status;
@@ -69,7 +93,6 @@ bool Board::CheckThreadRunStatus()
    if(status)
    {
       clear();
-      printw("Press any key to exit...");
       refresh();
    }
 

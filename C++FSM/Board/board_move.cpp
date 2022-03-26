@@ -31,27 +31,49 @@ void Board::ProcessInput(int input)
 {
    switch(input)
    {
+   #pragma region Movement
    case KEY_UP:
+      if (_enemy->y == _player->y - 1 && 
+          _enemy->x == _player->x)
+          break;
+
       --_player->y;
       SetRedraw();
       break;
 
    case KEY_DOWN:
+      if (_enemy->y == _player->y + 1 &&
+          _enemy->x == _player->x)
+         break;
+
       ++_player->y;
       SetRedraw();
       break;
       
    case KEY_LEFT:
+      if (_enemy->x == _player->x - 1 &&
+          _enemy->y == _player->y)
+         break;
       --_player->x;
       SetRedraw();
       break;
       
    case KEY_RIGHT:
+      if (_enemy->x == _player->x + 1 &&
+          _enemy->y == _player->y)
+         break;
+
       ++_player->x;
       SetRedraw();
       break;
+   #pragma endregion // Movement
 
-   case 'q':
+   case 'a': // 공격
+      AttackEnemy();
+      SetRedraw();
+      break;
+
+   case 'q': // 종료
       pthread_mutex_lock(&_mutex);
       _stopThread = true;
       pthread_mutex_unlock(&_mutex);

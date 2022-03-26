@@ -4,7 +4,9 @@
 #include <string>
 #include <pthread.h>
 #include <ncurses.h>
+
 #include "../Coord/coord.h"
+#include "../Character/character.h"
 
 class Board
 {
@@ -26,6 +28,14 @@ public:
    // 요약
    //    모든 스레드가 join 하기 전 까지 block 합니다.
    void WaitAllThreads();
+
+   // 요약
+   //    플레이어를 공격합니다.
+   void AttackPlayer();
+   
+   // 요약
+   //    적을 공격합니다.
+   void AttackEnemy();
 
 private:
 
@@ -85,6 +95,9 @@ private:
    COORD *_player;
    COORD *_enemy;
    COORD *_screen; // 화면 크기
+
+   CHARACTER *_playerData;
+   CHARACTER *_enemyData;
 
    WINDOW *w;
 };

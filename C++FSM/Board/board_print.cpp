@@ -26,6 +26,9 @@ void* Board::PrintThread()
 
 void Board::PrintBoard()
 {
-   mvprintw(_player->y, _player->x, "a");
-   mvprintw(_enemy->y, _enemy->x, "o");
+   if(_playerData->_active)
+      mvprintw(_player->y, _player->x, "a");
+
+   if(_enemyData->_active)
+      mvprintw(_enemy->y, _enemy->x, "o");
 }
