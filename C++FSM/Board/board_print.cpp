@@ -20,7 +20,7 @@ void* Board::PrintThread()
 
       clear();
       PrintBoard();
-      refresh(); // FIXME: 이상한 쓰래기 문자 가끔 출력됨
+      refresh();
    
 
    }
