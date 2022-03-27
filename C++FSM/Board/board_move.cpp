@@ -54,6 +54,7 @@ void Board::ProcessInput(int input)
       if (_enemy->x == _player->x - 1 &&
           _enemy->y == _player->y)
          break;
+
       --_player->x;
       SetRedraw();
       break;
@@ -63,13 +64,13 @@ void Board::ProcessInput(int input)
           _enemy->y == _player->y)
          break;
 
-      ++_player->x;
+      ++_playerData->_coord->x;
       SetRedraw();
       break;
    #pragma endregion // Movement
 
    case 'a': // 공격
-      AttackEnemy();
+      _playerData->Attack(_enemyData);
       SetRedraw();
       break;
 

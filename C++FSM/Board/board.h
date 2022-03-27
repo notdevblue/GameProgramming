@@ -7,19 +7,13 @@
 
 #include "../Coord/coord.h"
 #include "../Character/character.h"
+#include "../Character/enemy.h"
 
 class Board
 {
 public:
    Board(int x, int y, int enemyX, int enemyY);
    ~Board();
-
-   // 요약
-   //    플레이어와 거리를 확인합니다.
-   //
-   // 반환
-   //    플레이어와의 거리 (부호 없음)
-   double DistanceWithPlayer();
 
    // 요약
    //    유닛을 이동시킵니다.
@@ -51,6 +45,7 @@ private:
    void ProcessInput(int input);
 
    pthread_t _inputThread;
+
 #pragma endregion // Move
 
 #pragma region Print
@@ -85,19 +80,18 @@ private:
    //    화면을 다시 그러야 한다고 설정합니다.
    void SetRedraw();
 
-   std::map<std::string, COORD*> _unitmap;
    int _enemyCount = 0; // 적 아이디 용
 
    pthread_mutex_t _mutex;
    bool _stopThread; // true 인 경우 스레드를 멈춤
    bool _redraw; // 다시 그러야 함을 나타냄
 
+   COORD *_screen; // 화면 크기
    COORD *_player;
    COORD *_enemy;
-   COORD *_screen; // 화면 크기
 
    CHARACTER *_playerData;
-   CHARACTER *_enemyData;
+   ENEMY     *_enemyData;
 
    WINDOW *w;
 };

@@ -1,4 +1,4 @@
-#include "board.h"
+#include "./board.h"
 
 void* Board::PrintThreadHelper(void *context)
 {
@@ -31,8 +31,10 @@ void* Board::PrintThread()
 void Board::PrintBoard()
 {
    if(_playerData->_active)
-      mvprintw(_player->y, _player->x, "a");
+      mvprintw(_playerData->_coord->y, // seg fault
+               _playerData->_coord->x, "a");
 
    if(_enemyData->_active)
-      mvprintw(_enemy->y, _enemy->x, "o");
+      mvprintw(_enemyData->_coord->y,
+               _enemyData->_coord->x, "o");
 }

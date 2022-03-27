@@ -9,16 +9,14 @@ Board::Board(int x, int y, int enemyX, int enemyY)
    _stopThread = false;
    _redraw = true;
 
-   _player     = new COORD(x / 2, y / 2);
-   _playerData = new CHARACTER(10, 1, 3.0);
-   _enemy      = new COORD(enemyX, enemyY);
-   _enemyData  = new CHARACTER(5, 1, 1.0);
+   _player = new COORD(x / 2, y / 2);
+   _playerData = new CHARACTER(10, 1, 3.0, _player);
+
+   _enemy = new COORD(enemyX, enemyY);
+   _enemyData = new ENEMY(5, 1, 1.0, _enemy);
 
    getmaxyx(w, sx, sy);
    COORD *_screen = new COORD(sx, sy);
-
-   _unitmap.insert(std::make_pair("PLAYER", _player));
-   _unitmap.insert(std::make_pair("ENEMY", _enemy));
 
    w = initscr();
    clear();
@@ -37,9 +35,9 @@ Board::Board(int x, int y, int enemyX, int enemyY)
 Board::~Board()
 {
    delete _player;
-   delete _playerData;
-
    delete _enemy;
+
+   delete _playerData;
    delete _enemyData;
 
    delete _screen;
@@ -47,26 +45,18 @@ Board::~Board()
    endwin();
 }
 
-double Board::DistanceWithPlayer()
-{
-   pthread_mutex_lock(&_mutex);
-   int x = _player->x - _enemy->x;
-   int y = _player->y - _enemy->y;
-   pthread_mutex_unlock(&_mutex);
-
-   return std::sqrt(x * x + y * y);
-}
-
 void Board::WaitAllThreads()
 {
+   _enemyData->WaitAllThreads();
+
    pthread_join(_inputThread, NULL);
    pthread_join(_printThread, NULL);
 }
 
 void Board::AttackPlayer()
 {
-   double distance = DistanceWithPlayer();
-   if(_enemyData->_atkDistance >= distance)
+   // double distance = DistanceWithPlayer();
+   // if(_enemyData->_atkDistance >= distance)
    {
       _playerData->Damage(_enemyData->_atk);
    }
@@ -74,8 +64,8 @@ void Board::AttackPlayer()
 
 void Board::AttackEnemy()
 {
-   double distance = DistanceWithPlayer();
-   if (_playerData->_atkDistance >= distance)
+   // double distance = DistanceWithPlayer();
+   // if (_playerData->_atkDistance >= distance)
    {
       _enemyData->Damage(_playerData->_atk);
    }

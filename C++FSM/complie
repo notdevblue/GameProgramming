@@ -1,2 +1,2 @@
 #!/bin/bash
-exec g++ ./main.cpp ./Coord/coord.cpp ./Board/board.cpp ./Board/board_move.cpp ./Board/board_print.cpp ./Character/character.cpp -lpthread -lncurses -ltinfo -o ./test;
+exec g++ ./main.cpp ./Coord/coord.cpp ./Board/board.cpp ./Board/board_move.cpp ./Board/board_print.cpp ./Character/character.cpp ./Character/enemy.cpp -lpthread -lncurses -ltinfo -o ./test;
