@@ -13,8 +13,13 @@ int g_maze[8][8] =
    {1, 0, 0, 0, 0, 0, 0, 3}
 };
 
-int g_dx[4] = {0, 1, -1,  0};
-int g_dy[4] = {1, 0,  0, -1};
+int g_visited[8][8];
+
+int g_dx[4] = {0, 0, 1, -1};
+int g_dy[4] = {1, -1, 0, 0};
+
+// int g_dx[4] = {1, 0, 0, -1};
+// int g_dy[4] = {0, 1, -1, 0};
 
 int g_x = 0;
 int g_y = 0;
@@ -36,18 +41,15 @@ void search()
 
    while (1)
    {
-      if (g_maze[g_y][g_x] == 3)
-         return;
-
       for (int i = 0; i < 4; ++i)
       {
          x = g_x + g_dx[i];
          y = g_y + g_dy[i];
 
-         if (x > 7 || x < 0 || y > 7 || y < 0)
+         if ((g_visited[y][x]) || (x > 7 || x < 0 || y > 7 || y < 0))
             continue;  
 
-         if(g_maze[y][x] == 3)
+         if (g_maze[y][x] == 3)
          {
             g_x = x;
             g_y = y;
@@ -57,6 +59,7 @@ void search()
 
          if (!g_maze[y][x])
          {
+            g_visited[y][x] = 1;
             g_x = x;
             g_y = y;
             break;
