@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SnakeManager : MonoBehaviour
 {
+   private bool isAdd = true;
    public GameObject bodyPrefab;
    public List<GameObject> bodyList;
    public float moveDelay = 0.6f;
@@ -12,6 +13,7 @@ public class SnakeManager : MonoBehaviour
 
    private void Start()
    {
+
       GameObject s = Instantiate(bodyPrefab);
       s.transform.position = new Vector3(0.0f, 0.0f, -1.2f);
       bodyList.Add(s);
@@ -42,11 +44,32 @@ public class SnakeManager : MonoBehaviour
 
    IEnumerator Move()
    {
-      while (true)
+      while (Test.isMove)
       {
          yield return new WaitForSeconds(moveDelay);
+         
+         if(!Test.isMove) break;
 
-         bodyList[0].transform.position += moves;
+         if (isAdd)
+         {
+            bodyList.Insert(0, bodyList[bodyList.Count - 1]);
+            bodyList[0].transform.position += moves;
+            bodyList.RemoveAt(bodyList.Count - 1);
+         }
+         else
+         {
+            GameObject s = Instantiate(bodyPrefab);
+            bodyList.Add(s);
+            bodyList[1].transform.position = bodyList[0].transform.position + moves;
+
+            isAdd = true;
+         }
+
       }
+   }
+
+   public void Add()
+   {
+      isAdd = false;
    }
 }

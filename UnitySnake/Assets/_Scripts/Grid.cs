@@ -91,7 +91,8 @@ public class Grid : MonoBehaviour
          for (int i = 0; i < gridList.Count; ++i)
          {
             Vector3 target = gridList[i].transform.position;
-            target.z = Mathf.Sin(Time.time + ((int)(i / size) * denst)) + Mathf.Sin(Time.time + ((i % size) * denst));
+            target.z = Mathf.Sin(Time.time + ((int)(i / size) * denst))
+                     + Mathf.Sin(Time.time + ((i % size) * denst));
             gridList[i].transform.position = target;
          }
 

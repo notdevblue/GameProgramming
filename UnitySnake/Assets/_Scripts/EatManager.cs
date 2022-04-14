@@ -36,9 +36,11 @@ public class EatManager : MonoBehaviour
 
    IEnumerator EnableFood()
    {
-      while(true)
+      while(Test.isMove)
       {
          yield return new WaitForSeconds(foodSpawnDelay);
+         if (!Test.isMove) break;
+
          List<GameObject> temp = foods.FindAll(e => !e.activeSelf);
          temp[Random.Range(0, temp.Count)].SetActive(true);
       }

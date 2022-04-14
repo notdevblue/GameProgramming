@@ -15,23 +15,39 @@ int g_maze[8][8] =
 
 int g_visited[8][8];
 
-int g_dx[4] = {0, 0, 1, -1};
-int g_dy[4] = {1, -1, 0, 0};
-
-// int g_dx[4] = {1, 0, 0, -1};
-// int g_dy[4] = {0, 1, -1, 0};
-
+int g_dx[4];
+int g_dy[4];
 int g_x = 0;
 int g_y = 0;
 
 void search();
 void print();
 
-int main()
+void main()
 {
+   printf("[D]FS, [B]FS\r\n");
+   char input = getchar();
+   if (input == 'D' || input == 'd')
+   {
+      g_dx[0] = g_dx[1] = g_dy[2] = g_dy[3] = 0;
+      g_dx[2] = g_dy[0] = 1;
+      g_dx[3] = g_dy[1] = -1;
+   }
+   else if (input == 'B' || input == 'b')
+   {
+      g_dx[2] = g_dx[3] = g_dy[0] = g_dy[1] = 0;
+      g_dx[0] = g_dy[2] = 1;
+      g_dx[1] = g_dy[3] = -1;
+   }
+   else
+   {
+      printf("Wrong input");
+      return;
+   }
+
    search();
 
-   return (0);
+   return;
 }
 
 void search()
