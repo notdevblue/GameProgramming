@@ -13,11 +13,12 @@ public class Snake : MonoBehaviour
    {
       if (transform.position.x > 14.0f || transform.position.y > 14.0f || transform.position.x < 0.0f || transform.position.y < 0.0f)
       {
+         GameOver();
          Test.isMove = false;
       }
    }
 
-   public void Gameover()
+   public void GameOver()
    {
       GameObject.Find("Canvas").transform.GetChild(0).gameObject.SetActive(true);
    }
