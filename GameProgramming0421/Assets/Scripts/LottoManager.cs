@@ -5,8 +5,9 @@ using UnityEngine;
 public class LottoManager : MonoBehaviour
 {
    private List<int> lottoList = new List<int>();
+   
 
-   private void Start()
+   private void Awake()
    {
       LottoCreate();
    }
@@ -21,7 +22,7 @@ public class LottoManager : MonoBehaviour
       // MySort();
       // BubbleSort();
       // DoLotto();
-      LottoNumber();
+      // LottoNumber();
    }
 
    public void MySort()
@@ -87,7 +88,7 @@ public class LottoManager : MonoBehaviour
       Debug.Log("Bonus: " + result[result.Count - 1]);
    }
 
-   public void LottoNumber()
+   public void LottoNumber(System.Action<int> callback)
    {
       List<int> result = new List<int>();
 
@@ -100,7 +101,7 @@ public class LottoManager : MonoBehaviour
 
       for (int i = 0; i < result.Count; ++i)
       {
-         Debug.Log(result[i]);
+         callback(result[i]);
       }
    }
 
