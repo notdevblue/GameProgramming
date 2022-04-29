@@ -1,30 +1,35 @@
 #include <iostream>
 #include <cmath>
+#include <stack>
 
 #define S 2 // Starting position
 #define G 3 // Goal position
 
-typedef class node
+typedef class _node
 {
 public:
-   inline node(int f, int g, int h, int d) :
+   inline _node(int f, int g, int h, int c) :
       f(f), 
       g(g), 
-      h(h), 
-      d(d),
-      c(0)
+      h(h),
+      c(c)
       {};
    
    int f;
    int g;
    int h;
-   int d; // data
    int c; // checked
 } NODE;
 
-NODE* board[7][7];
+typedef struct _coord
+{
+   int x;
+   int y;
+} COORD;
 
-int boardData[7][7] =
+NODE* g_board[7][7];
+
+int g_boardData[7][7] =
 {
    {0, 0, 0, 0, 0, 0, 0},
    {0, 0, 0, 0, 0, 0, 0},
@@ -35,35 +40,61 @@ int boardData[7][7] =
    {0, 0, 0, 0, 0, 0, 0},
 };
 
+const COORD g_begin{1, 3};
+const COORD g_end{5, 3};
+      COORD g_current = g_begin;
+
+std::stack<COORD> g_coordHistory;
+
+void PrintMapdata();
+void Search();
+
 int main()
 {
-   int startPosX = 1;
-   int startPosY = 3;
 
-   int goalPosX = 5;
-   int goalPosY = 3;
 
-   for (int y = 0; y < 7; ++y)
+   for (float y = 0; y < 7; ++y)
    {
-      for (int x = 0; x < 7; ++x)
+      for (float x = 0; x < 7; ++x)
       {
-         int g = sqrt(pow((x - startPosX), 2) + pow((y - startPosY), 2));
-         int h = sqrt(pow((x - goalPosX), 2) + pow((y - goalPosY), 2));
+         int g = sqrt(pow(abs(x - g_begin.x) * 10.0f, 2) + pow(abs(y - g_begin.y) * 10.0f, 2));
+         int h = abs(x - g_end.x) * 10.0f + abs(y - g_end.y) * 10.0f;
          int f = g + h;
 
-         board[y][x] = new NODE(f, g, h, boardData[y][x]);
+         g_board[(int)y][(int)x] =
+            new NODE(f, g, h,
+                     g_boardData[(int)y][(int)x] == 1 ? 1 : 0);
       }
    }
 
-   
+   // PrintMapdata();
+
+   Search();
 
    for (int y = 0; y < 7; ++y)
    {
       for (int x = 0; x < 7; ++x)
       {
-         delete board[y][x];
+         delete g_board[y][x];
       }
    }
 
    return (0);
+}
+
+void Search()
+{
+   
+}
+
+void PrintMapdata()
+{
+   for (int y = 0; y < 7; ++y)
+   {
+      for (int x = 0; x < 7; ++x)
+      {
+         printf("G: %02d ,H: %02d ,F: %03d\t", g_board[y][x]->g, g_board[y][x]->h, g_board[y][x]->f);
+      }
+      printf("\r\n");
+   }
 }
